@@ -9,6 +9,7 @@ type Node struct {
 
 type List struct {
 	head *Node
+	size int
 }
 
 func (l *List) append(val int) {
@@ -25,9 +26,13 @@ func (l *List) append(val int) {
 		}
 		last.next = &node
 	}
+	l.size++
 }
 
 func (l *List) insert(pos int, val int) {
+	if pos < 0 || pos > l.size {
+		panic("Out of index")
+	}
 
 }
 
