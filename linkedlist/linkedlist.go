@@ -5,7 +5,7 @@ import (
 )
 
 type Node struct {
-	data int
+	data interface{}
 	next *Node
 }
 
@@ -13,7 +13,11 @@ type List struct {
 	head *Node
 }
 
-func (l *List) append(val int) {
+func (l *List) new() {
+	l.head = nil
+}
+
+func (l *List) append(val interface{}) {
 	node := Node{data: val, next: nil}
 	if l.head == nil {
 		l.head = &node
@@ -26,12 +30,12 @@ func (l *List) append(val int) {
 	}
 }
 
-func (l *List) prepend(val int) {
+func (l *List) prepend(val interface{}) {
 	node := Node{data: val, next: l.head}
 	l.head = &node
 }
 
-func (l *List) insert(pos int, val int) {
+func (l *List) insert(pos int, val interface{}) {
 	if pos < 0 || pos > l.size() {
 		fmt.Println("Out of index")
 		return
@@ -68,7 +72,7 @@ func (l *List) remove(pos int) {
 	}
 }
 
-func (l *List) has(val int) bool {
+func (l *List) has(val interface{}) bool {
 	node := l.head
 	for node != nil {
 		if node.data == val {
@@ -77,6 +81,30 @@ func (l *List) has(val int) bool {
 		node = node.next
 	}
 	return false
+}
+
+func (l *List) search(val interface{}) *Node {
+	node := l.head
+	for node != nil {
+		if node.data == val {
+			return node
+		}
+		node = node.next
+	}
+	return nil
+}
+
+func (l *List) indexOf(val interface{}) int {
+	count := 0
+	node := l.head
+	for node != nil {
+		if node.data == val {
+			return count
+		}
+		node = node.next
+		count++
+	}
+	return count
 }
 
 func (l *List) isEmpty() bool {
@@ -95,10 +123,7 @@ func (l *List) size() int {
 
 func (l *List) print() {
 	node := l.head
-	for {
-		if node == nil {
-			break
-		}
+	for node != nil {
 		fmt.Print(node.data)
 		fmt.Print(" ")
 		node = node.next
