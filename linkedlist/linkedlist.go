@@ -26,6 +26,11 @@ func (l *List) append(val int) {
 	}
 }
 
+func (l *List) prepend(val int) {
+	node := Node{data: val, next: l.head}
+	l.head = &node
+}
+
 func (l *List) insert(pos int, val int) {
 	if pos < 0 || pos > l.size() {
 		fmt.Println("Out of index")
@@ -63,7 +68,7 @@ func (l *List) remove(pos int) {
 	}
 }
 
-func (l *List) search(val int) bool {
+func (l *List) has(val int) bool {
 	node := l.head
 	for node != nil {
 		if node.data == val {
