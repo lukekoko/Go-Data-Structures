@@ -55,28 +55,29 @@ func (tree *bst) search(val int, node *Node) *Node {
 	}
 }
 
-func (tree *bst) delete(val int, root *Node) *Node {
+func (tree *bst) delete(val int) {
+	tree.deleteNode(val, tree.root)
+}
+
+func (tree *bst) deleteNode(val int, root *Node) *Node {
 	if root == nil {
-		return root
+		return nil
 	}
 	if val < root.data {
-		root.left = tree.delete(val, root.left)
+		root.left = tree.deleteNode(val, root.left)
 	} else if val > root.data {
-		root.right = tree.delete(val, root.right)
+		root.right = tree.deleteNode(val, root.right)
 	} else {
 		if root.left == nil && root.right == nil {
 			root = nil
-			return root
 		} else if root.left != nil && root.right != nil {
-			root.data = tree.min(root.right).data
-			root.right = tree.delete(val, root.right)
-			return root
+			min := tree.min(root.right)
+			root.data = min.data
+			root.right = tree.deleteNode(min.data, root.right)
 		} else if root.left == nil {
-			root = root.right
-			return root
+			*root = *root.right
 		} else if root.right == nil {
-			root = root.left
-			return root
+			*root = *root.left
 		}
 	}
 	return root
@@ -113,11 +114,15 @@ func main() {
 	tree.insert(7)
 	tree.insert(1)
 	tree.insert(3)
+	tree.insert(14)
+	tree.insert(9)
 	tree.insert(8)
-	tree.delete(1, tree.root)
-	tree.delete(3, tree.root)
-	tree.delete(8, tree.root)
-	tree.delete(7, tree.root)
+	tree.delete(7)
+	tree.delete(8)
+	tree.delete(9)
+	tree.delete(14)
+	tree.delete(1)
+	tree.delete(3)
 	tree.preorder(tree.root)
 
 }
