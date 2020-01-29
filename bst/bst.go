@@ -163,5 +163,5 @@ func main() {
 	tree.delete()
 	tree.print("postorder")
 	tree.insert(2)
-	
+
 }
